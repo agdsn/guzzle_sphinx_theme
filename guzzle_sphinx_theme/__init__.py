@@ -14,10 +14,18 @@ from pygments.token import Keyword, Name, Comment, String, Error, \
 
 def setup(app):
     """Setup conntects events to the sitemap builder"""
+    app.require_sphinx('1.6')  # For add_html_theme()
+    app.add_html_theme(
+        'guzzle_sphinx_theme',
+        os.path.abspath(os.path.join(os.path.dirname(__file__),
+                        'guzzle_sphinx_theme')))
     app.connect('html-page-context', add_html_link)
     app.connect('build-finished', create_sitemap)
     app.set_translator('html', HTMLTranslator)
     app.sitemap_links = []
+    return {
+        'parallel_read_safe': True,
+    }
 
 
 def add_html_link(app, pagename, templatename, context, doctree):
